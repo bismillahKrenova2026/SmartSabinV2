@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'blynk' => [
+        'token' => env('BLYNK_TOKEN'),
+    ],
+
 ];

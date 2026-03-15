@@ -25,7 +25,9 @@ class SensorData extends Model
         'servo_valve',
         'target_ph',
         'ph_stlh_air',
-        'penyiraman_ulang'
+        'penyiraman_ulang',
+        'suhu_tanah',
+        'flow_rate'
     ];
 }
 {
