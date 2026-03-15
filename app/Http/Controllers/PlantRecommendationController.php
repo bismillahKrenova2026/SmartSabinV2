@@ -12,8 +12,8 @@ class PlantRecommendationController extends Controller
 {
     public function index()
     {
-        // 1. Ambil data dari Database (untuk pH Air, dsb)
-        $history = SensorData::latest()->take(20)->get();
+
+        $history = SensorData::orderBy('created_at', 'desc')->take(20)->get();
 
         // 2. Ambil data dari Google Sheets (untuk Rekomendasi)
         $url = env('GOOGLE_SHEET_WEB_APP_URL');

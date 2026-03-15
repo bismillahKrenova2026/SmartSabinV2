@@ -164,49 +164,37 @@ class="bg-gray-900 border border-gray-800 p-5 rounded-xl shadow">
 <h3 class="text-xl font-semibold mb-4">
 📋 Riwayat Sensor
 </h3>
-
-<div class="overflow-x-auto bg-gray-900 border border-gray-800 rounded-xl">
-
-<table class="w-full text-sm">
-
-<thead class="bg-gray-800">
-
-<tr>
-
-<th class="p-3">Waktu</th>
-<th class="p-3">pH Air</th>
-<th class="p-3">pH Tanah</th>
-<th class="p-3">Suhu</th>
-<th class="p-3">Kelembaban Tanah</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-@foreach($history as $item)
-
-<tr class="border-t border-gray-800 hover:bg-gray-800">
-
-<td class="p-3">{{ $item->created_at }}</td>
-<td class="p-3">{{ $item->ph_air }}</td>
-<td class="p-3">{{ $item->ph_tanah }}</td>
-<td class="p-3">{{ $item->suhu_udara }}</td>
-<td class="p-3">{{ $item->kelembaban_tanah }}</td>
-
-</tr>
-
-@endforeach
-
-</tbody>
-
-</table>
-
+<div class="overflow-x-auto bg-gray-900 border border-gray-800 rounded-xl shadow-lg">
+    <table class="w-full text-sm text-gray-300">
+        <thead class="bg-gray-800 text-gray-400 uppercase text-xs">
+            <tr>
+                <th class="p-4 text-left">Waktu</th>
+                <th class="p-4">pH Air</th>
+                <th class="p-4">pH Tanah</th>
+                <th class="p-4">Suhu</th>
+                <th class="p-4">Kelembaban</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800">
+            @forelse($history as $item)
+            <tr class="hover:bg-gray-800 transition-colors">
+                <td class="p-4 text-gray-400">
+                    {{ $item->created_at->diffForHumans() }} 
+                    <span class="block text-[10px] text-gray-600">{{ $item->created_at->format('H:i:s') }}</span>
+                </td>
+                <td class="p-4 text-center font-mono">{{ number_format($item->ph_air, 1) }}</td>
+                <td class="p-4 text-center font-mono">{{ number_format($item->ph_tanah, 1) }}</td>
+                <td class="p-4 text-center text-orange-400">{{ $item->suhu_udara }}°C</td>
+                <td class="p-4 text-center text-blue-400">{{ $item->kelembaban_tanah }}%</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="5" class="p-6 text-center text-gray-500">Belum ada data sensor.</td>
+            </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
-
-</div>
-
 </main>
 <div class="bg-gray-900 border border-gray-800 rounded-xl shadow-lg p-6">
     @if($latestRecommendation)
