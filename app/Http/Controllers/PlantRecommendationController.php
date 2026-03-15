@@ -5,35 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Google\Client;
 use Google\Service\Sheets;
+use Illuminate\Support\Facades\Http; 
+use App\Models\SensorData; // Tambahkan ini untuk mengambil data DB
 
 class PlantRecommendationController extends Controller
 {
     public function index()
     {
-        $client = new Client();
-        // Path ke file JSON yang disimpan di storage
-        $client->setAuthConfig(storage_path('app/google-auth.json'));
-        $client->addScope(Sheets::SPREADSHEETS_READONLY);
+        // 1. Ambil data dari Database (untuk pH Air, dsb)
+        $history = SensorData::latest()->take(20)->get();
 
-        $service = new Sheets($client);
-        $spreadsheetId = env('GOOGLE_SPREADSHEET_ID');
-        
-        // Tentukan nama sheet dan rentang data (misal: Sheet1 baris A ke E)
-        $range = 'Sheet1!A2:E'; 
+        // 2. Ambil data dari Google Sheets (untuk Rekomendasi)
+        $url = env('GOOGLE_SHEET_WEB_APP_URL');
+        $response = Http::withoutVerifying()->get($url);
 
-        try {
-            $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-            $values = $response->getValues();
-
-            if (empty($values)) {
-                $recommendations = [];
-            } else {
-                $recommendations = $values;
+        $latestRecommendation = null;
+        if ($response->successful()) {
+            $data = $response->json();
+            if (!empty($data)) {
+                $latestRecommendation = collect($data)->last();
             }
+        }
 
-            return view('welcome.index', compact('recommendations'));
-        } catch (\Exception $e) {
-            return view('welcome', ['recommendations' => []])->withErrors($e->getMessage());
+        // 3. Kirim KEDUA variabel ke view welcome
+        return view('welcome', compact('history', 'latestRecommendation'));
     }
-}
 }
