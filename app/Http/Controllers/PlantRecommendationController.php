@@ -3,31 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Google\Client;
-use Google\Service\Sheets;
-use Illuminate\Support\Facades\Http; 
-use App\Models\SensorData; // Tambahkan ini untuk mengambil data DB
+use Illuminate\Support\Facades\Http;
+use App\Models\SensorData;
 
 class PlantRecommendationController extends Controller
 {
+    // Menampilkan halaman dashboard
     public function index()
     {
+        // Ambil 1 data sensor terbaru
+        $latest = SensorData::orderBy('created_at', 'desc')->first();
 
-        $history = SensorData::orderBy('created_at', 'desc')->take(20)->get();
-
-        // 2. Ambil data dari Google Sheets (untuk Rekomendasi)
+        // Ambil rekomendasi dari Google Sheet
         $url = env('GOOGLE_SHEET_WEB_APP_URL');
         $response = Http::withoutVerifying()->get($url);
 
         $latestRecommendation = null;
         if ($response->successful()) {
             $data = $response->json();
-            if (!empty($data)) {
-                $latestRecommendation = collect($data)->last();
-            }
+            if (!empty($data)) $latestRecommendation = collect($data)->last();
         }
 
-        // 3. Kirim KEDUA variabel ke view welcome
-        return view('welcome', compact('history', 'latestRecommendation'));
+        return view('welcome', compact('latest', 'latestRecommendation'));
+    }
+
+    // API untuk realtime
+    public function latestSensorData()
+    {
+        $latest = SensorData::orderBy('created_at', 'desc')->first();
+
+        if ($latest) {
+            return response()->json([
+                'ph_air' => $latest->ph_air,
+                'ph_tanah' => $latest->ph_tanah,
+                'suhu_udara' => $latest->suhu_udara,
+                'kelembaban_tanah' => $latest->kelembaban_tanah,
+                'created_at' => $latest->created_at->format('Y-m-d H:i:s'),
+            ]);
+        }
+
+        return response()->json(null, 404);
     }
 }
