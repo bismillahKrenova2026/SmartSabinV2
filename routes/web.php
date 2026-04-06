@@ -15,8 +15,10 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.perform');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::post('/ai-analysis', [SensorController::class, 'aiAnalysis'])->name('ai.analysis');
-Route::post('/control', [SensorController::class, 'control'])->name('control');
+Route::middleware('auth')->group(function () {
+    Route::post('/ai-analysis', [SensorController::class, 'aiAnalysis'])->name('ai.analysis');
+    Route::post('/control', [SensorController::class, 'control'])->name('control');
+});
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/recommendation', [PlantController::class, 'recommendation'])->name('recommendation');

@@ -4,9 +4,12 @@
     <section class="space-y-8">
         <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Pemilihan tanaman</p>
+                <div class="flex items-center gap-2">
+                    <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Pemilihan tanaman</p>
+                    <span class="rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-semibold text-indigo-300">🤖 Powered by AI</span>
+                </div>
                 <h1 class="mt-2 text-3xl font-bold text-white">Pilih tanaman yang paling cocok untuk lahan saat ini</h1>
-                <p class="mt-3 max-w-3xl text-slate-300">Sistem menampilkan kandidat tanaman berdasarkan kondisi lahan, kualitas air, dan saran dari spreadsheet. User bisa memilih satu tanaman aktif lalu monitoring akan mengikutinya.</p>
+                <p class="mt-3 max-w-3xl text-slate-300">Sistem AI menganalisis kondisi lahan, kualitas air, dan data sensor untuk memberikan rekomendasi tanaman yang paling akurat. User bisa memilih satu tanaman aktif lalu monitoring akan mengikutinya.</p>
             </div>
             <div class="flex gap-3">
                 <a href="<?php echo e(route('dashboard')); ?>" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-white/10">Kembali ke dashboard</a>
@@ -57,6 +60,24 @@
                         </div>
                     <?php endif; ?>
 
+                    <?php if(! empty($plant['device_settings'])): ?>
+                        <div class="mt-5 rounded-3xl border border-indigo-500/20 bg-indigo-500/10 p-5">
+                            <p class="text-sm font-semibold text-indigo-300">🔧 Saran Pengaturan Perangkat</p>
+                            <ul class="mt-3 space-y-2 text-sm text-slate-300">
+                                <?php $__currentLoopData = $plant['device_settings']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $setting): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li class="flex gap-2"><span class="text-indigo-400">⚙</span><span><?php echo e($setting); ?></span></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if(! empty($plant['monitoring_notes'])): ?>
+                        <div class="mt-5 rounded-3xl border border-sky-500/20 bg-sky-500/10 p-5">
+                            <p class="text-sm font-semibold text-sky-300">📋 Catatan Monitoring</p>
+                            <p class="mt-2 text-sm text-slate-300"><?php echo e($plant['monitoring_notes']); ?></p>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="mt-5">
                         <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Keunggulan</p>
                         <div class="mt-3 flex flex-wrap gap-2">
@@ -84,14 +105,29 @@
             <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <p class="text-sm text-slate-400">Tindakan cepat</p>
-                    <h2 class="mt-1 text-2xl font-bold text-white">Jika pilihan sebelumnya kurang tepat, reset tanaman aktif</h2>
+                    <?php if($activePlantKey): ?>
+                        <h2 class="mt-1 text-2xl font-bold text-white">Jika pilihan sebelumnya kurang tepat, reset tanaman aktif</h2>
+                    <?php else: ?>
+                        <h2 class="mt-1 text-2xl font-bold text-white">Mulai dengan memilih salah satu tanaman di atas</h2>
+                    <?php endif; ?>
                 </div>
-                <form method="POST" action="<?php echo e(route('plant.change')); ?>">
-                    <?php echo csrf_field(); ?>
-                    <button class="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20">
-                        Ganti tanaman
-                    </button>
-                </form>
+                <?php if($activePlantKey): ?>
+                    <form method="POST" action="<?php echo e(route('plant.change')); ?>">
+                        <?php echo csrf_field(); ?>
+                        <button class="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20">
+                            Ganti tanaman
+                        </button>
+                    </form>
+                <?php else: ?>
+                    <div class="flex gap-3">
+                        <a href="#top" class="rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-400">
+                            Pilih tanaman
+                        </a>
+                        <a href="<?php echo e(route('monitoring')); ?>" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-white/10">
+                            Lihat monitoring
+                        </a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

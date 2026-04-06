@@ -44,7 +44,7 @@ return [
     ],
 
     'openrouter' => [
-    'key' => env('OPENROUTER_API_KEY'),
-    'model' => env('OPENROUTER_MODEL', 'qwen/qwen3.6-plus:free'),
+        'key' => env('OPENROUTER_API_KEY'),
+        'model' => env('OPENROUTER_MODEL', 'qwen/qwen3.6-plus:free'),
     ],
 ];

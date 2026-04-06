@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SensorData;
+use App\Services\AIService;
 use App\Services\BlynkService;
-use App\Services\PlantRecommendationService;
 use App\Services\SpreadsheetService;
 use App\Services\WaterProcessingService;
 use Illuminate\Http\RedirectResponse;
@@ -18,14 +18,19 @@ class PlantController extends Controller
     public function recommendation(
         BlynkService $blynkService,
         SpreadsheetService $spreadsheetService,
-        PlantRecommendationService $plantRecommendationService,
+        AIService $aiService,
         WaterProcessingService $waterProcessingService
     ): View {
-        $liveSensor = $blynkService->snapshot();
+        $liveSensor = $blynkService->snapshot(true);
         $latestSavedSensor = SensorData::latest()->first();
         $sensor = $liveSensor ?? $latestSavedSensor;
         $spreadsheetRecommendation = $spreadsheetService->latestRecommendation();
-        $analysis = $plantRecommendationService->recommend($sensor, $spreadsheetRecommendation);
+        
+        // Gunakan AI untuk rekomendasi
+        // Convert sensor to array - handle both object dan array
+        $sensorArray = is_array($sensor) ? $sensor : ($sensor ? $sensor->toArray() : []);
+        $analysis = $aiService->recommendPlants($sensorArray, $spreadsheetRecommendation);
+        
         $waterStatus = $waterProcessingService->evaluate($sensor);
         $activePlantKey = session('active_plant_key');
 

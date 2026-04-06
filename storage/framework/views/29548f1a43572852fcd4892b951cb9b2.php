@@ -196,7 +196,12 @@ function control(pin, value) {
 }
 
 function runAI() {
-    document.getElementById('ai-result').innerText = "Memproses AI...";
+    const resultElement = document.getElementById('ai-result');
+    const button = event.target;
+    
+    resultElement.innerText = "⏳ Memproses analisis AI... Mohon tunggu sebentar...";
+    button.disabled = true;
+    button.style.opacity = '0.6';
 
     fetch("<?php echo e(route('ai.analysis')); ?>", {
         method: "POST",
@@ -204,15 +209,25 @@ function runAI() {
             "X-CSRF-TOKEN": "<?php echo e(csrf_token()); ?>"
         }
     })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('ai-result').innerText = data.result;
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
     })
-    .catch(() => {
-        document.getElementById('ai-result').innerText = "Gagal mengambil data AI";
+    .then(data => {
+        resultElement.innerText = data.result || "Tidak ada hasil analisis";
+    })
+    .catch((error) => {
+        resultElement.innerText = "❌ Gagal mengambil data AI:\n" + error.message + "\n\nMohon pastikan API key OpenRouter sudah dikonfigurasi dengan benar di .env";
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        button.disabled = false;
+        button.style.opacity = '1';
     });
 }
 </script>
-    <?php $__env->stopSection(); ?>
+<?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\smart_sabin\resources\views/monitoring.blade.php ENDPATH**/ ?>

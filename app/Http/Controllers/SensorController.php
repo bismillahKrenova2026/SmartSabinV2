@@ -13,7 +13,7 @@ class SensorController extends Controller
 {
     public function fetchFromBlynk(Request $request, BlynkService $blynkService): JsonResponse|RedirectResponse
     {
-        $snapshot = $blynkService->snapshot();
+        $snapshot = $blynkService->snapshot(true);
 
         if (! $snapshot) {
             if ($request->expectsJson()) {
@@ -50,7 +50,7 @@ class SensorController extends Controller
             return response()->json($latest);
         }
 
-        $snapshot = $blynkService->snapshot();
+        $snapshot = $blynkService->snapshot(true);
 
         if ($snapshot) {
             $fillable = (new SensorData())->getFillable();

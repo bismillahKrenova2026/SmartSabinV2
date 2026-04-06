@@ -30,6 +30,8 @@ class SpreadsheetService
 
         $recommendation = $lower['rekomendasi_tanaman']
             ?? $lower['rekomendasi']
+            ?? $lower['keterangan']
+            ?? $lower['saran_tindakan']
             ?? $lower['tanaman']
             ?? $lower['plant']
             ?? $lower['name']
@@ -38,6 +40,7 @@ class SpreadsheetService
         $statusServo = $lower['status_servo']
             ?? $lower['servo']
             ?? $lower['servo_valve']
+            ?? $lower['saran_status_servo']
             ?? $lower['status']
             ?? null;
 
@@ -52,9 +55,44 @@ class SpreadsheetService
             'status_servo' => $statusServo,
             'target_ph' => $targetPh,
             'catatan' => $lower['catatan'] ?? $lower['note'] ?? null,
-            'timestamp' => $lower['timestamp'] ?? $lower['created_at'] ?? $lower['waktu'] ?? null,
+            'timestamp' => $lower['timestamp'] ?? $lower['created_at'] ?? $lower['waktu'] ?? $lower['time'] ?? null,
             'raw' => $row,
         ];
+    }
+
+    private function parseRowTimestamp(array $row): ?int
+    {
+        $timestamp = $row['timestamp'] ?? $row['created_at'] ?? $row['waktu'] ?? $row['time'] ?? null;
+
+        if (! $timestamp) {
+            return null;
+        }
+
+        try {
+            return (new \DateTime((string) $timestamp))->getTimestamp();
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    private function pickLatestRow(array $rows): ?array
+    {
+        $candidates = collect($rows)
+            ->filter(fn ($row) => is_array($row))
+            ->map(fn ($row) => $this->normalizeRow($row));
+
+        if ($candidates->isEmpty()) {
+            return null;
+        }
+
+        $withTimestamp = $candidates->filter(fn (array $row) => $this->parseRowTimestamp($row) !== null);
+        if ($withTimestamp->isNotEmpty()) {
+            return $withTimestamp
+                ->sortByDesc(fn (array $row) => $this->parseRowTimestamp($row) ?? 0)
+                ->first();
+        }
+
+        return $candidates->last();
     }
 
     private function extractLatest(array|object|null $payload): ?array
@@ -78,13 +116,7 @@ class SpreadsheetService
         }
 
         if (array_is_list($payload)) {
-            $candidate = collect($payload)->last();
-
-            if (is_array($candidate)) {
-                return $this->normalizeRow($candidate);
-            }
-
-            return null;
+            return $this->pickLatestRow($payload);
         }
 
         return $this->normalizeRow($payload);
@@ -92,23 +124,28 @@ class SpreadsheetService
 
     public function latestRecommendation(): ?array
     {
-        return Cache::remember('smart_sabin.spreadsheet.latest_recommendation', now()->addSeconds(30), function () {
+        return Cache::remember('smart_sabin.spreadsheet.latest_recommendation', now()->addSeconds(10), function () {
             $url = $this->url();
 
             if (! $url) {
                 return null;
             }
 
-            $response = Http::withoutVerifying()
-                ->acceptJson()
-                ->timeout(15)
-                ->get($url);
+            try {
+                $response = Http::withoutVerifying()
+                    ->acceptJson()
+                    ->timeout(15)
+                    ->get($url);
 
-            if (! $response->successful()) {
+                if (! $response->successful()) {
+                    return null;
+                }
+
+                return $this->extractLatest($response->json());
+            } catch (\Exception $e) {
+                // Jika koneksi gagal, return null agar aplikasi tetap berfungsi
                 return null;
             }
-
-            return $this->extractLatest($response->json());
         });
     }
 }

@@ -164,7 +164,7 @@
         <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold text-white">Analisis AI</h2>
-                <button onclick="runAI()" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-xl text-white font-semibold">
+                <button type="button" onclick="runAI(event)" class="bg-indigo-500 hover:bg-indigo-400 px-4 py-2 rounded-xl text-white font-semibold">
                     Jalankan AI
                 </button>
             </div>
@@ -197,8 +197,13 @@ function control(pin, value) {
     });
 }
 
-function runAI() {
-    document.getElementById('ai-result').innerText = "Memproses AI...";
+function runAI(event) {
+    const resultElement = document.getElementById('ai-result');
+    const button = event.target;
+    
+    resultElement.innerText = "⏳ Memproses analisis AI... Mohon tunggu sebentar...";
+    button.disabled = true;
+    button.style.opacity = '0.6';
 
     fetch("{{ route('ai.analysis') }}", {
         method: "POST",
@@ -206,13 +211,23 @@ function runAI() {
             "X-CSRF-TOKEN": "{{ csrf_token() }}"
         }
     })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById('ai-result').innerText = data.result;
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
     })
-    .catch(() => {
-        document.getElementById('ai-result').innerText = "Gagal mengambil data AI";
+    .then(data => {
+        resultElement.innerText = data.result || "Tidak ada hasil analisis";
+    })
+    .catch((error) => {
+        resultElement.innerText = "❌ Gagal mengambil data AI:\n" + error.message + "\n\nMohon pastikan API key OpenRouter sudah dikonfigurasi dengan benar di .env";
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        button.disabled = false;
+        button.style.opacity = '1';
     });
 }
 </script>
-    @endsection
+@endsection
