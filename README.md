@@ -1,64 +1,367 @@
+# 🌱 Smart Sabin Dashboard V2
 
-# smart_sabin
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12.x-ff2d20?style=for-the-badge\&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777bb4?style=for-the-badge\&logo=php)
+![Blade](https://img.shields.io/badge/Blade-Template-orange?style=for-the-badge)
+![Railway](https://img.shields.io/badge/Deployed%20on-Railway-0b0d0e?style=for-the-badge\&logo=railway)
+![Krenova](https://img.shields.io/badge/Krenova-Klaten%202026-f59e0b?style=for-the-badge)
 
-## About Laravel
+## 🚀 Smart Farming Dashboard berbasis Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Smart Sabin Dashboard V2** adalah web aplikasi monitoring pertanian cerdas berbasis **Laravel** yang dibangun untuk menampilkan, mengolah, dan memantau data tanaman dalam satu dashboard yang modern, terstruktur, dan siap digunakan secara online.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+🌐 **Live Website:** [smart-sabin.up.railway.app](https://smart-sabin.up.railway.app)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+</div>
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 📌 Tentang Project
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Smart Sabin Dashboard V2 merupakan pengembangan dari versi sebelumnya yang masih berupa prototype. Versi ini dibuat sebagai **web asli** dan bukan sekadar dummy demo, dengan fitur autentikasi, dashboard terproteksi, rekomendasi tanaman, monitoring aktif, kontrol, serta integrasi layanan eksternal untuk mendukung sistem Smart Farming.
 
-## Laravel Sponsors
+Aplikasi ini cocok digunakan untuk:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* 🌾 Monitoring pertanian cerdas
+* 📊 Visualisasi dan pemantauan kondisi tanaman
+* 🔐 Sistem dashboard dengan login
+* 🤖 Analisis berbasis data / AI
+* 🧪 Proyek inovasi dan presentasi teknologi
+* 🏆 Dokumentasi karya **Krenova Klaten 2026**
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## ✨ Highlight Utama
 
-## Contributing
+* ✅ **Web asli berbasis Laravel**
+* ✅ **Halaman publik dan dashboard terpisah**
+* ✅ **Login session dengan autentikasi Laravel**
+* ✅ **Dashboard terproteksi**
+* ✅ **Rekomendasi tanaman**
+* ✅ **Monitoring tanaman aktif**
+* ✅ **Tombol ganti / pilih tanaman**
+* ✅ **Kontrol dan sinkronisasi sensor**
+* ✅ **Integrasi Blynk**
+* ✅ **Integrasi Google Spreadsheet**
+* ✅ **Analisis AI**
+* ✅ **Siap deploy di Railway**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🧭 Alur Sistem
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```txt
+Sensor / Data Lapangan
+        ↓
+ESP32 / Mikrokontroler
+        ↓
+Blynk / Spreadsheet / API
+        ↓
+Laravel Web App
+        ↓
+Dashboard, Monitoring, Rekomendasi, AI Analysis
+```
 
-## Security Vulnerabilities
+Alur ini menunjukkan bahwa Smart Sabin tidak hanya menampilkan data, tetapi juga menjadi pusat pengelolaan informasi untuk kebutuhan monitoring pertanian.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🧩 Fitur yang Tersedia
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 1. Halaman Publik
 
+* Landing page / welcome page
+* Tampilan awal untuk pengunjung
+* Akses menuju login dan fitur utama
 
- 1d4799d909b027866acceed19e9edb7ebdb5ce13
+### 2. Autentikasi User
+
+* Login session menggunakan Laravel Auth
+* Logout aman
+* Dashboard hanya bisa diakses user yang sudah login
+
+### 3. Dashboard Terproteksi
+
+* Ringkasan informasi utama
+* Navigasi ke fitur monitoring dan rekomendasi
+* Tampilan terstruktur untuk pengguna aktif
+
+### 4. Rekomendasi Tanaman
+
+* Menampilkan rekomendasi tanaman berdasarkan kondisi yang dipilih
+* Mendukung pemilihan tanaman
+* Tersedia aksi untuk mengganti tanaman
+
+### 5. Monitoring Tanaman Aktif
+
+* Memantau tanaman yang sedang dipilih
+* Menyajikan status pemantauan secara terpusat
+* Memudahkan user melihat kondisi terbaru
+
+### 6. Kontrol Sistem
+
+* Endpoint kontrol sensor / perangkat
+* Endpoint sinkronisasi data sensor
+* Endpoint analisis AI
+
+### 7. Integrasi Eksternal
+
+* **Blynk** untuk koneksi data IoT
+* **Google Spreadsheet** untuk pencatatan data
+* **OpenRouter** untuk fitur AI (opsional)
+
+---
+
+## 📄 Halaman / Route Utama
+
+Berdasarkan struktur project, beberapa route utama yang tersedia antara lain:
+
+* `/` → halaman utama
+* `/login` → halaman login
+* `/dashboard` → dashboard utama
+* `/recommendation` / `/rekomendasi` → rekomendasi tanaman
+* `/monitoring` / `/pantauan` → halaman monitoring
+* `/plant/select` → pilih tanaman
+* `/plant/change` → ganti tanaman
+* `/sensor/sync` → sinkronisasi data sensor
+* `/control` → kontrol sistem
+* `/ai-analysis` → analisis AI
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+| Teknologi         | Fungsi                   |
+| ----------------- | ------------------------ |
+| Laravel 12        | Framework utama aplikasi |
+| PHP 8.2+          | Bahasa backend           |
+| Blade             | Template engine tampilan |
+| Vite              | Build tool frontend      |
+| Tailwind CSS 4    | Styling modern           |
+| Axios             | Request HTTP             |
+| Google API Client | Integrasi Google layanan |
+| Railway           | Hosting / deployment     |
+
+---
+
+## 📦 Dependensi Penting
+
+Dari struktur project, beberapa komponen penting yang digunakan adalah:
+
+* `laravel/framework`
+* `laravel/tinker`
+* `google/apiclient`
+* `vite`
+* `tailwindcss`
+* `axios`
+* `concurrently`
+
+---
+
+## 📁 Struktur Project
+
+```txt
+SmartSabinV2
+├── app
+│   ├── Http
+│   │   └── Controllers
+│   ├── Models
+│   ├── Providers
+│   └── Services
+├── bootstrap
+├── config
+├── database
+├── public
+├── resources
+├── routes
+├── storage
+├── tests
+├── artisan
+├── composer.json
+├── package.json
+├── railway.json
+└── README.md
+```
+
+### Services yang tersedia
+
+Folder `app/Services` berisi logika inti seperti:
+
+* `AIService.php`
+* `BlynkService.php`
+* `PlantRecommendationService.php`
+* `SpreadsheetService.php`
+* `WaterProcessingService.php`
+
+### Controllers yang tersedia
+
+Folder `app/Http/Controllers` berisi controller utama seperti:
+
+* `AuthController.php`
+* `DashboardController.php`
+* `HomeController.php`
+* `MonitoringController.php`
+* `PlantController.php`
+* `PlantRecommendationController.php`
+* `SensorController.php`
+
+---
+
+## ⚙️ Instalasi Lokal
+
+### 1. Clone repository
+
+```bash
+git clone https://github.com/bismillahKrenova2026/SmartSabinV2.git
+cd SmartSabinV2
+```
+
+### 2. Install dependency PHP
+
+```bash
+composer install
+```
+
+### 3. Install dependency frontend
+
+```bash
+npm install
+```
+
+### 4. Copy file environment
+
+```bash
+cp .env.example .env
+```
+
+### 5. Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Jalankan migration
+
+```bash
+php artisan migrate
+```
+
+### 7. Jalankan aplikasi
+
+```bash
+php artisan serve
+```
+
+Jika ingin mode development penuh:
+
+```bash
+npm run dev
+```
+
+---
+
+## 🔐 Environment Variables Penting
+
+Beberapa variabel penting yang digunakan pada project ini antara lain:
+
+```env
+APP_NAME=Smart Sabin
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://smart-sabin.up.railway.app
+
+DB_CONNECTION=pgsql
+DATABASE_URL=
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+
+BLYNK_TOKEN=
+GOOGLE_SHEET_WEB_APP_URL=
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=qwen/qwen3.6-plus:free
+SMART_SABIN_ADMIN_EMAIL=
+SMART_SABIN_ADMIN_PASSWORD=
+```
+
+---
+
+## 🚀 Deployment
+
+Project ini sudah disiapkan untuk deployment di **Railway**.
+
+Fitur yang mendukung deployment:
+
+* `railway.json`
+* `Procfile`
+* otomatisasi migrasi dan seed
+* dukungan PostgreSQL via `DATABASE_URL`
+* login admin awal melalui seeder
+
+Contoh alur deploy:
+
+```txt
+GitHub → Railway → PostgreSQL → Domain Publik → Smart Sabin
+```
+
+---
+
+## 🔑 Login Default
+
+Jika seeder akun admin digunakan, login awal mengikuti konfigurasi environment:
+
+* `SMART_SABIN_ADMIN_EMAIL`
+* `SMART_SABIN_ADMIN_PASSWORD`
+
+> Untuk keamanan, pastikan kredensial default diganti saat deploy produksi.
+
+---
+
+## 🎯 Tujuan Pengembangan
+
+Smart Sabin Dashboard V2 dibuat untuk:
+
+* membangun sistem Smart Farming yang lebih rapi dan terpusat
+* memudahkan monitoring tanaman secara online
+* menjadi media integrasi data sensor dan layanan web
+* mendukung pengembangan aplikasi IoT berbasis Laravel
+* menjadi karya inovasi teknologi untuk ajang **Krenova Klaten 2026**
+
+---
+
+## 🧑‍💻 Tim Pengembang
+
+* **M. FAHRI FIRNANDO**
+* **RAHMAD TEGAR YURIANTO**
+* **TOTOK ANDRIANTO**
+* **ZAKIAN AUFA NURENDRA**
+
+---
+
+## 🏷️ Branding
+
+<div align="center">
+
+### Krenova Klaten 2026
+
+**Smart Farming, Smarter Future**
+
+</div>
+
+---
+
+## 📝 Catatan
+
+* Project ini merupakan versi web aktif, bukan sekadar demo.
+* Struktur Laravel digunakan agar project lebih rapi, mudah dikembangkan, dan siap diintegrasikan dengan sistem IoT nyata.
+* README ini dapat terus diperbarui mengikuti fitur terbaru yang ditambahkan ke aplikasi.
+
+---
+
+<div align="center">
+
+**Made with ❤️ for Smart Agriculture**
+
+</div>
